@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spazasure - Manufacturing Verification Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --spaza-blue: #2563eb;
+            --spaza-light: #93c5fd;
+            --spaza-orange: #ff7846;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        .navbar {
+            background-color: var(--primary);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(44, 62, 80, 0.85), rgba(44, 62, 80, 0.9)), url('https://images.unsplash.com/photo-1593642632823-8f785ba67e45?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            margin-bottom: 50px;
+        }
+        
+        .feature-card {
+            border: none;
+            border-radius: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-primary {
+            background-color: var(--spaza-blue);
+            border: none;
+            padding: 10px 20px;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+        }
+        
+        .btn-spaza {
+            background-color: var(--spaza-blue);
+            color: white;
+        }
+        
+        .btn-spaza:hover {
+            background-color: #1d4ed8;
+            color: white;
+        }
+        
+        .btn-spaza-orange {
+            background-color: var(--spaza-orange);
+            color: white;
+        }
+        
+        .btn-spaza-orange:hover {
+            background-color: #e5673b;
+            color: white;
+        }
+        
+        .section-title {
+            position: relative;
+            margin-bottom: 40px;
+            font-weight: 700;
+        }
+        
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background: var(--spaza-blue);
+            margin-top: 15px;
+        }
+        
+        .auth-container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            background: white;
+        }
+        
+        .dashboard-card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .sticker-preview {
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            background: linear-gradient(45deg, #f5f5f5 25%, transparent 25%, transparent 75%, #f5f5f5 75%, #f5f5f5),
+                        linear-gradient(45deg, #f5f5f5 25%, transparent 25%, transparent 75%, #f5f5f5 75%, #f5f5f5);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+        }
+        
+        .verification-code {
+            font-family: monospace;
+            font-size: 18px;
+            letter-spacing: 2px;
+            background: #eee;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 40px 0;
+            margin-top: 50px;
+        }
+        
+        .spaza-badge {
+            background-color: var(--spaza-light);
+            color: var(--spaza-blue);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+        
+        .spaza-highlight {
+            color: var(--spaza-blue);
+            font-weight: 600;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);
+        }
+        
+        .logo-hero {
+            width: 80px;
+            height: 80px;
+            font-size: 32px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            box-shadow: 0 6px 12px rgba(37, 99, 235, 0.4);
+        }
+        
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+        }
+        
+        .request-card {
+            border-left: 4px solid var(--spaza-orange);
+            transition: all 0.3s;
+        }
+        
+        .request-card:hover {
+            transform: translateX(5px);
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--spaza-orange);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+        }
+        
+        .tabs-spazashop {
+            border-bottom: 2px solid var(--spaza-orange);
+        }
+        
+        .nav-link.active {
+            font-weight: 600;
+            color: var(--spaza-orange) !important;
+            border-bottom: 3px solid var(--spaza-orange) !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <div class="logo">S</div>
+                <span>Spazasure</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#how-it-works">How It Works</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <button class="btn btn-outline-light me-2" onclick="showLogin()">Login</button>
+                    <button class="btn btn-light" onclick="showRegister()">Register</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container text-center">
+            <div class="logo-hero">S</div>
+            <span class="spaza-badge mb-3 d-inline-block">Introducing SpazaSure Technology</span>
+            <h1 class="display-4 fw-bold mb-4">Secure Your Products with Spazasure Verification</h1>
+            <p class="lead mb-4">Protect your brand and empower consumers to verify authenticity with our tamper-proof verification stickers powered by Spazasure technology</p>
+            <button class="btn btn-primary btn-lg me-2" onclick="showRegister()">Get Started Now</button>
+            <button class="btn btn-spaza-orange btn-lg" onclick="showSpazashopInfo()">Sell to Spazashop</button>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-5">
+        <div class="container">
+            <h2 class="text-center section-title mx-auto">Why Choose SpazaSure?</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card feature-card">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon mb-3">
+                                <i class="fas fa-link fa-3x" style="color: var(--spaza-blue);"></i>
+                            </div>
+                            <h4 class="card-title">SpazaSure Verification</h4>
+                            <p class="card-text">Each sticker contains a unique code secured by SpazaSure technology, making it impossible to duplicate or forge.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon mb-3">
+                                <i class="fas fa-store fa-3x" style="color: var(--spaza-orange);"></i>
+                            </div>
+                            <h4 class="card-title">Sell to SpazaShop</h4>
+                            <p class="card-text">Connect directly with Spazashop and local tuckshops to expand your distribution network and increase sales.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon mb-3">
+                                <i class="fas fa-chart-line fa-3x" style="color: var(--spaza-blue);"></i>
+                            </div>
+                            <h4 class="card-title">Product Analytics</h4>
+                            <p class="card-text">Gain insights into verification patterns and track your products through the supply chain with our dashboard analytics.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center section-title mx-auto">How Spazasure Works</h2>
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="accordion" id="worksAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#step1">
+                                    Step 1: Register Your Company
+                                </button>
+                            </h2>
+                            <div id="step1" class="accordion-collapse collapse show" data-bs-parent="#worksAccordion">
+                                <div class="accordion-body">
+                                    Create your manufacturer account by providing company details and documentation for verification.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step2">
+                                    Step 2: Add Your Products
+                                </button>
+                            </h2>
+                            <div id="step2" class="accordion-collapse collapse" data-bs-parent="#worksAccordion">
+                                <div class="accordion-body">
+                                    Define your product catalog with details like name, description, category, and images.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step3">
+                                    Step 3: Connect to Spazashop
+                                </button>
+                            </h2>
+                            <div id="step3" class="accordion-collapse collapse" data-bs-parent="#worksAccordion">
+                                <div class="accordion-body">
+                                    List your products on Spazashop and receive orders directly from tuckshops and bulk buyers.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step4">
+                                    Step 4: Fulfill Orders & Grow
+                                </button>
+                            </h2>
+                            <div id="step4" class="accordion-collapse collapse" data-bs-parent="#worksAccordion">
+                                <div class="accordion-body">
+                                    Fulfill orders, receive payments, and grow your business through the Spazasure network.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <img src="https://images.unsplash.com/photo-1602524818609-2dfb6a5a5c0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Verification process" class="img-fluid rounded shadow">
+                    <div class="mt-4 p-3 bg-white rounded shadow-sm">
+                        <h5 class="spaza-highlight">Spazasure Technology</h5>
+                        <p class="mb-0">Our proprietary algorithm generates unique, secure codes that are virtually impossible to replicate or predict.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Spazashop Info Section -->
+    <section id="spazashop-info" class="py-5" style="display: none;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="card">
+                        <div class="card-header bg-white text-center">
+                            <h2 class="mb-0">Sell Directly to Spazashop</h2>
+                            <p class="text-muted">Expand your distribution network with our integrated tuckshop marketplace</p>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h4>Benefits</h4>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i> Access to hundreds of tuckshops</li>
+                                        <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i> Bulk order opportunities</li>
+                                        <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i> Streamlined ordering process</li>
+                                        <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i> Regular order forecasts</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <h4>How It Works</h4>
+                                    <ol>
+                                        <li>List your products on Spazashop</li>
+                                        <li>Receive requests from tuckshops</li>
+                                        <li>Review order requirements</li>
+                                        <li>Accept or negotiate orders</li>
+                                        <li>Fulfill and ship products</li>
+                                        <li>Get paid securely</li>
+                                    </ol>
+                                </div>
+                            </div>
+                            <div class="text-center mt-4">
+                                <button class="btn btn-spaza-orange btn-lg" onclick="showRegister()">Join Spazashop Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Registration Form (Initially Hidden) -->
+    <section id="registration-section" class="py-5" style="display: none;">
+        <div class="container">
+            <div class="auth-container">
+                <div class="logo-container justify-content-center mb-3">
+                    <div class="logo">S</div>
+                    <h3 class="m-0">Spazasure</h3>
+                </div>
+                <h2 class="text-center mb-4">Create Manufacturer Account</h2>
+                <form id="registration-form">
+                    <div class="mb-3">
+                        <label for="companyName" class="form-label">Company Name</label>
+                        <input type="text" class="form-control" id="companyName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="industry" class="form-label">Industry</label>
+                        <select class="form-select" id="industry" required>
+                            <option value="">Select Industry</option>
+                            <option value="electronics">Electronics</option>
+                            <option value="pharmaceuticals">Pharmaceuticals</option>
+                            <option value="apparel">Apparel</option>
+                            <option value="food">Food & Beverage</option>
+                            <option value="cosmetics">Cosmetics</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="terms" required>
+                        <label class="form-check-label" for="terms">I agree to the Terms of Service</label>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="spazashop-optin">
+                        <label class="form-check-label" for="spazashop-optin">I want to sell my products on Spazashop</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Register</button>
+                    <p class="text-center mt-3">
+                        Already have an account? <a href="#" onclick="showLogin()">Login here</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Form (Initially Hidden) -->
+    <section id="login-section" class="py-5" style="display: none;">
+        <div class="container">
+            <div class="auth-container">
+                <div class="logo-container justify-content-center mb-3">
+                    <div class="logo">S</div>
+                    <h3 class="m-0">Spazasure</h3>
+                </div>
+                <h2 class="text-center mb-4">Manufacturer Login</h2>
+                <form id="login-form">
+                    <div class="mb-3">
+                        <label for="login-email" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="login-email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="login-password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="login-password" required>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="remember">
+                        <label class="form-check-label" for="remember">Remember me</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Login</button>
+                    <p class="text-center mt-3">
+                        Don't have an account? <a href="#" onclick="showRegister()">Register here</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard (Initially Hidden) -->
+    <section id="dashboard" class="py-5" style="display: none;">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="logo-container">
+                    <div class="logo">S</div>
+                    <h2 class="m-0">Spazasure Dashboard</h2>
+                </div>
+                <div>
+                    <button class="btn btn-outline-secondary me-2" onclick="showSpazashop()">
+                        <i class="fas fa-store me-1"></i> Spazashop
+                        <span class="notification-badge" id="spazashop-notification">3</span>
+                    </button>
+                    <button class="btn btn-outline-secondary" onclick="logout()">Logout</button>
+                </div>
+            </div>
+            
+            <div class="alert alert-primary d-flex align-items-center">
+                <i class="fas fa-info-circle me-2 fa-lg"></i>
+                <div>
+                    Your products are protected with <strong>Spazasure Verification</strong> technology
+                </div>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card dashboard-card text-center">
+                        <div class="card-body">
+                            <i class="fas fa-cube fa-3x mb-2" style="color: var(--spaza-blue);"></i>
+                            <h3 id="product-count">0</h3>
+                            <p class="card-text">Products</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card dashboard-card text-center">
+                        <div class="card-body">
+                            <i class="fas fa-layer-group fa-3x mb-2" style="color: var(--spaza-blue);"></i>
+                            <h3 id="batch-count">0</h3>
+                            <p class="card-text">Batches</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card dashboard-card text-center">
+                        <div class="card-body">
+                            <i class="fas fa-check-circle fa-3x mb-2" style="color: var(--spaza-blue);"></i>
+                            <h3 id="code-count">0</h3>
+                            <p class="card-text">Codes Generated</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card dashboard-card text-center">
+                        <div class="card-body">
+                            <i class="fas fa-store fa-3x mb-2" style="color: var(--spaza-orange);"></i>
+                            <h3 id="order-count">0</h3>
+                            <p class="card-text">Spazashop Orders</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <ul class="nav nav-tabs mb-4">
+                <li class="nav-item">
+                    <a class="nav-link active" data-bs-toggle="tab" href="#products">Products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#batches">Batches</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#generate">Generate Codes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#spazashop">Spazashop</a>
+                </li>
+            </ul>
+            
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="products">
+                    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addProductModal">
+                        <i class="fas fa-plus me-1"></i> Add Product
+                    </button>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Price</th>
+                                    <th>On Spazashop</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="products-table-body">
+                                <!-- Products will be added here dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="tab-pane fade" id="batches">
+                    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createBatchModal">
+                        <i class="fas fa-plus me-1"></i> Create Batch
+                    </button>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Batch ID</th>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Date Created</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="batches-table-body">
+                                <!-- Batches will be added here dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="tab-pane fade" id="generate">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Generate Spazasure Codes</h5>
+                                    <p class="text-muted">Create unique verification codes for your product batches</p>
+                                    <form id="generate-codes-form">
+                                        <div class="mb-3">
+                                            <label for="batch-select" class="form-label">Select Batch</label>
+                                            <select class="form-select" id="batch-select" required>
+                                                <option value="">Choose a batch</option>
+                                            </select>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-key me-1"></i> Generate Codes
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="sticker-preview">
+                                <h5>Spazasure Sticker Preview</h5>
+                                <div class="verification-code" id="preview-code">SPZ-XXXX-XXXX-XXXX</div>
+                                <div id="qrcode" class="mb-3"></div>
+                                <p>Scan to verify authenticity</p>
+                                <button class="btn btn-sm btn-outline-primary" onclick="generatePreviewCode()">Refresh Preview</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Recently Generated Codes</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Code</th>
+                                            <th>Product</th>
+                                            <th>Batch</th>
+                                            <th>Generated On</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="codes-table-body">
+                                        <!-- Codes will be added here dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-pane fade" id="spazashop">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h4>Spazashop Orders & Requests</h4>
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i> You have <strong id="pending-orders">3</strong> pending order requests from Spazashop
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h5>Order Requests</h5>
+                                <div id="order-requests">
+                                    <div class="card request-card mb-3">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between">
+                                                <div>
+                                                    <h6>Bulk Order - Township Tuckshops Alliance</h6>
+                                                    <p class="mb-1">Product: Premium Maize Meal (5kg)</p>
+                                                    <p class="mb-1">Quantity: 500 units</p>
+                                                    <p class="mb-1">Minimum order: 300 units</p>
+                                                    <p class="mb-1">Requested delivery: 15 Oct 2023</p>
+                                                </div>
+                                                <div class="text-end">
+                                                    <span class="badge bg-warning">Pending</span>
+                                                    <div class="mt-2">
+                                                        <button class="btn btn-sm btn-success me-1" onclick="acceptOrder(1001)">Accept</button>
+                                                        <button class="btn btn-sm btn-outline-secondary" onclick="negotiateOrder(1001)">Negotiate</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="card request-card mb-3">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between">
+                                                <div>
+                                                    <h6>Single Order - Corner Cafe</h6>
+                                                    <p class="mb-1">Product: Fruit Juice (1L) - Assorted Flavors</p>
+                                                    <p class="mb-1">Quantity: 48 units</p>
+                                                    <p class="mb-1">Minimum order: 24 units</p>
+                                                    <p class="mb-1">Requested delivery: 12 Oct 2023</p>
+                                                </div>
+                                                <div class="text-end">
+                                                    <span class="badge bg-warning">Pending</span>
+                                                    <div class="mt-2">
+                                                        <button class="btn btn-sm btn-success me-1" onclick="acceptOrder(1002)">Accept</button>
+                                                        <button class="btn btn-sm btn-outline-secondary" onclick="negotiateOrder(1002)">Negotiate</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="card request-card mb-3">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between">
+                                                <div>
+                                                    <h6>Bulk Order - School Shops Network</h6>
+                                                    <p class="mb-1">Product: Energy Bars (40g)</p>
+                                                    <p class="mb-1">Quantity: 1200 units</p>
+                                                    <p class="mb-1">Minimum order: 800 units</p>
+                                                    <p class="mb-1">Requested delivery: 20 Oct 2023</p>
+                                                </div>
+                                                <div class="text-end">
+                                                    <span class="badge bg-warning">Pending</span>
+                                                    <div class="mt-2">
+                                                        <button class="btn btn-sm btn-success me-1" onclick="acceptOrder(1003)">Accept</button>
+                                                        <button class="btn btn-sm btn-outline-secondary" onclick="negotiateOrder(1003)">Negotiate</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h5>Your Spazashop Listings</h5>
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Price</th>
+                                                <th>Min Order</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="spazashop-listings">
+                                            <tr>
+                                                <td>Premium Maize Meal (5kg)</td>
+                                                <td>R45.00</td>
+                                                <td>20 units</td>
+                                                <td><span class="badge bg-success">Active</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary">Edit</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Fruit Juice (1L) - Assorted</td>
+                                                <td>R22.50</td>
+                                                <td>24 units</td>
+                                                <td><span class="badge bg-success">Active</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary">Edit</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Energy Bars (40g)</td>
+                                                <td>R8.50</td>
+                                                <td>50 units</td>
+                                                <td><span class="badge bg-success">Active</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary">Edit</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header bg-spaza-orange text-white">
+                                    <h5 class="mb-0">Spazashop Analytics</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <h6>Orders This Month</h6>
+                                        <div class="d-flex justify-content-between">
+                                            <span>Completed</span>
+                                            <strong>12</strong>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <span>Pending</span>
+                                            <strong>3</strong>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <h6>Revenue</h6>
+                                        <div class="d-flex justify-content-between">
+                                            <span>This Month</span>
+                                            <strong>R24,560.00</strong>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <span>Total</span>
+                                            <strong>R128,450.00</strong>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <h6>Top Products</h6>
+                                        <ol>
+                                            <li>Premium Maize Meal (5kg)</li>
+                                            <li>Fruit Juice (1L)</li>
+                                            <li>Energy Bars (40g)</li>
+                                        </ol>
+                                    </div>
+                                    
+                                    <button class="btn btn-spaza-orange w-100">
+                                        <i class="fas fa-download me-1"></i> Export Report
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="card mt-4">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Add Product to Spazashop</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form id="add-to-spazashop-form">
+                                        <div class="mb-3">
+                                            <label class="form-label">Select Product</label>
+                                            <select class="form-select" id="spazashop-product">
+                                                <option value="">Choose a product</option>
+                                                <option value="1">Premium Maize Meal (5kg)</option>
+                                                <option value="2">Fruit Juice (1L) - Assorted</option>
+                                                <option value="3">Energy Bars (40g)</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Price (R)</label>
+                                            <input type="number" class="form-control" step="0.01" min="0">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Minimum Order Quantity</label>
+                                            <input type="number" class="form-control" min="1" value="24">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Bulk Discount (%)</label>
+                                            <input type="number" class="form-control" min="0" max="50" value="5">
+                                        </div>
+                                        <button type="submit" class="btn btn-spaza-orange w-100">List on Spazashop</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="logo-container mb-3">
+                        <div class="logo">S</div>
+                        <h5 class="m-0">Spazasure</h5>
+                    </div>
+                    <p>Securing products with Spazasure verification technology to combat counterfeiting and ensure authenticity.</p>
+                </div>
+                <div class="col-md-2">
+                    <h5>Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white">Home</a></li>
+                        <li><a href="#features" class="text-white">Features</a></li>
+                        <li><a href="#how-it-works" class="text-white">How It Works</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Legal</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white">Privacy Policy</a></li>
+                        <li><a href="#" class="text-white">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Contact</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-envelope me-2"></i> support@spazasure.com</li>
+                        <li><i class="fas fa-phone me-2"></i> +1 (555) 123-4567</li>
+                        <li><i class="fas fa-store me-2"></i> spazashop@spazasure.com</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="mt-4 bg-light">
+            <p class="text-center mb-0">© 2023 Spazasure. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Add Product Modal -->
+    <div class="modal fade" id="addProductModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-product-form">
+                        <div class="mb-3">
+                            <label for="product-name" class="form-label">Product Name</label>
+                            <input type="text" class="form-control" id="product-name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="product-category" class="form-label">Category</label>
+                            <select class="form-select" id="product-category" required>
+                                <option value="">Select Category</option>
+                                <option value="electronics">Electronics</option>
+                                <option value="pharmaceuticals">Pharmaceuticals</option>
+                                <option value="apparel">Apparel</option>
+                                <option value="food">Food & Beverage</option>
+                                <option value="cosmetics">Cosmetics</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="product-description" class="form-label">Description</label>
+                            <textarea class="form-control" id="product-description" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="list-on-spazashop">
+                            <label class="form-check-label" for="list-on-spazashop">List this product on Spazashop</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="addProduct()">Add Product</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Batch Modal -->
+    <div class="modal fade" id="createBatchModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create New Batch</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="create-batch-form">
+                        <div class="mb-3">
+                            <label for="batch-product" class="form-label">Product</label>
+                            <select class="form-select" id="batch-product" required>
+                                <option value="">Select Product</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="batch-quantity" class="form-label">Quantity</label>
+                            <input type="number" class="form-control" id="batch-quantity" min="1" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="batch-notes" class="form-label">Notes (Optional)</label>
+                            <textarea class="form-control" id="batch-notes" rows="2"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="createBatch()">Create Batch</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <script>
+        // Sample data storage (in a real application, this would be server-side)
+        let users = JSON.parse(localStorage.getItem('spazasure_users')) || [];
+        let products = JSON.parse(localStorage.getItem('spazasure_products')) || [];
+        let batches = JSON.parse(localStorage.getItem('spazasure_batches')) || [];
+        let codes = JSON.parse(localStorage.getItem('spazasure_codes')) || [];
+        let orders = JSON.parse(localStorage.getItem('spazasure_orders')) || [
+            {id: 1001, product: "Premium Maize Meal (5kg)", quantity: 500, minOrder: 300, buyer: "Township Tuckshops Alliance", status: "pending", deliveryDate: "2023-10-15"},
+            {id: 1002, product: "Fruit Juice (1L) - Assorted Flavors", quantity: 48, minOrder: 24, buyer: "Corner Cafe", status: "pending", deliveryDate: "2023-10-12"},
+            {id: 1003, product: "Energy Bars (40g)", quantity: 1200, minOrder: 800, buyer: "School Shops Network", status: "pending", deliveryDate: "2023-10-20"}
+        ];
+        let currentUser = null;
+
+        // DOM Content Loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            const savedUser = localStorage.getItem('spazasure_currentUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                showDashboard();
+            }
+            
+            // Generate a preview code
+            generatePreviewCode();
+            
+            // Form submissions
+            document.getElementById('registration-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                registerUser();
+            });
+            
+            document.getElementById('login-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                loginUser();
+            });
+            
+            document.getElementById('generate-codes-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                generateCodes();
+            });
+            
+            document.getElementById('add-to-spazashop-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                addToSpazashop();
+            });
+        });
+
+        // Show registration section
+        function showRegister() {
+            document.getElementById('registration-section').style.display = 'block';
+            document.getElementById('login-section').style.display = 'none';
+            document.querySelector('.hero-section').style.display = 'none';
+            document.getElementById('features').style.display = 'none';
+            document.getElementById('how-it-works').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('spazashop-info').style.display = 'none';
+            window.scrollTo(0, 0);
+        }
+
+        // Show login section
+        function showLogin() {
+            document.getElementById('login-section').style.display = 'block';
+            document.getElementById('registration-section').style.display = 'none';
+            document.querySelector('.hero-section').style.display = 'none';
+            document.getElementById('features').style.display = 'none';
+            document.getElementById('how-it-works').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('spazashop-info').style.display = 'none';
+            window.scrollTo(0, 0);
+        }
+
+        // Show dashboard
+        function showDashboard() {
+            document.getElementById('dashboard').style.display = 'block';
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('registration-section').style.display = 'none';
+            document.querySelector('.hero-section').style.display = 'none';
+            document.getElementById('features').style.display = 'none';
+            document.getElementById('how-it-works').style.display = 'none';
+            document.getElementById('spazashop-info').style.display = 'none';
+            window.scrollTo(0, 0);
+            
+            // Update dashboard stats
+            updateDashboard();
+        }
+
+        // Show Spazashop info
+        function showSpazashopInfo() {
+            document.getElementById('spazashop-info').style.display = 'block';
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('registration-section').style.display = 'none';
+            document.querySelector('.hero-section').style.display = 'none';
+            document.getElementById('features').style.display = 'none';
+            document.getElementById('how-it-works').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'none';
+            window.scrollTo(0, 0);
+        }
+
+        // Show Spazashop tab
+        function showSpazashop() {
+            // Switch to Spazashop tab
+            const spazashopTab = document.querySelector('[href="#spazashop"]');
+            new bootstrap.Tab(spazashopTab).show();
+        }
+
+        // Show homepage
+        function showHomepage() {
+            document.querySelector('.hero-section').style.display = 'block';
+            document.getElementById('features').style.display = 'block';
+            document.getElementById('how-it-works').style.display = 'block';
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('registration-section').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('spazashop-info').style.display = 'none';
+            window.scrollTo(0, 0);
+        }
+
+        // Register a new user
+        function registerUser() {
+            const companyName = document.getElementById('companyName').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const industry = document.getElementById('industry').value;
+            const spazashopOptin = document.getElementById('spazashop-optin').checked;
+            
+            // Check if user already exists
+            if (users.find(user => user.email === email)) {
+                alert('User with this email already exists!');
+                return;
+            }
+            
+            // Create new user
+            const newUser = {
+                id: Date.now().toString(),
+                companyName,
+                email,
+                password, // In a real app, this would be hashed
+                industry,
+                spazashopOptin,
+                registrationDate: new Date().toISOString()
+            };
+            
+            users.push(newUser);
+            localStorage.setItem('spazasure_users', JSON.stringify(users));
+            
+            alert('Registration successful! Please login.');
+            showLogin();
+        }
+
+        // Login user
+        function loginUser() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('spazasure_currentUser', JSON.stringify(user));
+                showDashboard();
+            } else {
+                alert('Invalid email or password!');
+            }
+        }
+
+        // Logout
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('spazasure_currentUser');
+            showHomepage();
+        }
+
+        // Update dashboard with stats
+        function updateDashboard() {
+            if (!currentUser) return;
+            
+            // Filter products, batches, and codes for current user
+            const userProducts = products.filter(p => p.userId === currentUser.id);
+            const userBatches = batches.filter(b => b.userId === currentUser.id);
+            const userCodes = codes.filter(c => c.userId === currentUser.id);
+            const userOrders = orders.filter(o => o.userId === currentUser.id);
+            const pendingOrders = orders.filter(o => o.status === 'pending');
+            
+            // Update counts
+            document.getElementById('product-count').textContent = userProducts.length;
+            document.getElementById('batch-count').textContent = userBatches.length;
+            document.getElementById('code-count').textContent = userCodes.length;
+            document.getElementById('order-count').textContent = userOrders.length;
+            document.getElementById('pending-orders').textContent = pendingOrders.length;
+            document.getElementById('spazashop-notification').textContent = pendingOrders.length;
+            
+            // Update products table
+            const productsTableBody = document.getElementById('products-table-body');
+            productsTableBody.innerHTML = '';
+            
+            userProducts.forEach(product => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${product.name}</td>
+                    <td>${product.category}</td>
+                    <td>R${product.price || '0.00'}</td>
+                    <td>${product.onSpazashop ? '<span class="badge bg-success">Yes</span>' : '<span class="badge bg-secondary">No</span>'}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary">View</button>
+                    </td>
+                `;
+                productsTableBody.appendChild(row);
+            });
+            
+            // Update batches table
+            const batchesTableBody = document.getElementById('batches-table-body');
+            batchesTableBody.innerHTML = '';
+            
+            userBatches.forEach(batch => {
+                const product = userProducts.find(p => p.id === batch.productId);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${batch.id.slice(-6)}</td>
+                    <td>${product ? product.name : 'Unknown Product'}</td>
+                    <td>${batch.quantity}</td>
+                    <td>${new Date(batch.dateCreated).toLocaleDateString()}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary">View</button>
+                    </td>
+                `;
+                batchesTableBody.appendChild(row);
+            });
+            
+            // Update batch select for code generation
+            const batchSelect = document.getElementById('batch-select');
+            batchSelect.innerHTML = '<option value="">Choose a batch</option>';
+            
+            userBatches.forEach(batch => {
+                const product = userProducts.find(p => p.id === batch.productId);
+                const option = document.createElement('option');
+                option.value = batch.id;
+                option.textContent = `${product ? product.name : 'Unknown Product'} (Qty: ${batch.quantity})`;
+                batchSelect.appendChild(option);
+            });
+            
+            // Update batch select in create batch modal
+            const batchProductSelect = document.getElementById('batch-product');
+            batchProductSelect.innerHTML = '<option value="">Select Product</option>';
+            
+            userProducts.forEach(product => {
+                const option = document.createElement('option');
+                option.value = product.id;
+                option.textContent = product.name;
+                batchProductSelect.appendChild(option);
+            });
+            
+            // Update codes table
+            const codesTableBody = document.getElementById('codes-table-body');
+            codesTableBody.innerHTML = '';
+            
+            // Show last 5 codes
+            const recentCodes = userCodes.slice(-5);
+            
+            recentCodes.forEach(code => {
+                const batch = userBatches.find(b => b.id === code.batchId);
+                const product = userProducts.find(p => p.id === (batch ? batch.productId : ''));
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${code.code}</td>
+                    <td>${product ? product.name : 'Unknown'}</td>
+                    <td>${batch ? batch.id.slice(-6) : 'Unknown'}</td>
+                    <td>${new Date(code.generatedOn).toLocaleDateString()}</td>
+                `;
+                codesTableBody.appendChild(row);
+            });
+        }
+
+        // Add a new product
+        function addProduct() {
+            const name = document.getElementById('product-name').value;
+            const category = document.getElementById('product-category').value;
+            const description = document.getElementById('product-description').value;
+            const onSpazashop = document.getElementById('list-on-spazashop').checked;
+            
+            if (!name || !category) {
+                alert('Please fill in all required fields!');
+                return;
+            }
+            
+            const newProduct = {
+                id: Date.now().toString(),
+                userId: currentUser.id,
+                name,
+                category,
+                description,
+                onSpazashop,
+                dateAdded: new Date().toISOString()
+            };
+            
+            products.push(newProduct);
+            localStorage.setItem('spazasure_products', JSON.stringify(products));
+            
+            // Close modal and update dashboard
+            bootstrap.Modal.getInstance(document.getElementById('addProductModal')).hide();
+            document.getElementById('add-product-form').reset();
+            updateDashboard();
+            
+            alert('Product added successfully!');
+        }
+
+        // Create a new batch
+        function createBatch() {
+            const productId = document.getElementById('batch-product').value;
+            const quantity = document.getElementById('batch-quantity').value;
+            const notes = document.getElementById('batch-notes');
+            
+            if (!productId || !quantity) {
+                alert('Please fill in all required fields!');
+                return;
+            }
+            
+            const newBatch = {
+                id: Date.now().toString(),
+                userId: currentUser.id,
+                productId,
+                quantity: parseInt(quantity),
+                notes: notes.value,
+                dateCreated: new Date().toISOString()
+            };
+            
+            batches.push(newBatch);
+            localStorage.setItem('spazasure_batches', JSON.stringify(batches));
+            
+            // Close modal and update dashboard
+            bootstrap.Modal.getInstance(document.getElementById('createBatchModal')).hide();
+            document.getElementById('create-batch-form').reset();
+            updateDashboard();
+            
+            alert('Batch created successfully!');
+        }
+
+        // Generate verification codes for a batch
+        function generateCodes() {
+            const batchId = document.getElementById('batch-select').value;
+            
+            if (!batchId) {
+                alert('Please select a batch!');
+                return;
+            }
+            
+            const batch = batches.find(b => b.id === batchId && b.userId === currentUser.id);
+            
+            if (!batch) {
+                alert('Invalid batch selection!');
+                return;
+            }
+            
+            // Check if codes have already been generated for this batch
+            if (codes.some(c => c.batchId === batchId)) {
+                if (!confirm('Codes have already been generated for this batch. Generate again?')) {
+                    return;
+                }
+                
+                // Remove existing codes for this batch
+                codes = codes.filter(c => c.batchId !== batchId);
+            }
+            
+            // Generate unique codes
+            for (let i = 0; i < batch.quantity; i++) {
+                const code = generateUniqueCode();
+                codes.push({
+                    id: Date.now().toString() + i,
+                    userId: currentUser.id,
+                    batchId,
+                    code,
+                    generatedOn: new Date().toISOString()
+                });
+            }
+            
+            localStorage.setItem('spazasure_codes', JSON.stringify(codes));
+            updateDashboard();
+            
+            alert(`Successfully generated ${batch.quantity} Spazasure verification codes for this batch!`);
+        }
+
+        // Generate a unique verification code
+        function generateUniqueCode() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let code = 'SPZ-';
+            
+            for (let i = 0; i < 12; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+                if (i === 3 || i === 7) code += '-';
+            }
+            
+            // Ensure code is unique
+            if (codes.some(c => c.code === code)) {
+                return generateUniqueCode();
+            }
+            
+            return code;
+        }
+
+        // Generate a preview verification code
+        function generatePreviewCode() {
+            const code = generateUniqueCode();
+            document.getElementById('preview-code').textContent = code;
+            
+            // Generate QR code
+            const qrDiv = document.getElementById('qrcode');
+            qrDiv.innerHTML = '';
+            QRCode.toCanvas(qrDiv, code, { width: 100, margin: 1 }, function(error) {
+                if (error) console.error(error);
+            });
+        }
+
+        // Add product to Spazashop
+        function addToSpazashop() {
+            alert('Product listed on Spazashop successfully!');
+            document.getElementById('add-to-spazashop-form').reset();
+        }
+
+        // Accept order function
+        function acceptOrder(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                order.status = 'accepted';
+                localStorage.setItem('spazasure_orders', JSON.stringify(orders));
+                alert(`Order #${orderId} accepted successfully!`);
+                updateDashboard();
+            }
+        }
+
+        // Negotiate order function
+        function negotiateOrder(orderId) {
+            const newQuantity = prompt('Enter your counter quantity:');
+            if (newQuantity && !isNaN(newQuantity)) {
+                alert(`Counter offer of ${newQuantity} units sent for order #${orderId}`);
+            }
+        }
+    </script>
+</body>
+</html>
